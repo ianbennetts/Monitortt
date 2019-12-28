@@ -1,0 +1,126 @@
+﻿
+
+<script src="~/Scripts/GunTTAPI3.js"></script>
+<script>
+    var ttBuffer = ["0", "1", "3", "4", "5","6","7"];
+</script>
+
+
+@model IEnumerable<Guntt.Models.DataModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    int i = 0;
+}
+<style>
+    #leftDiv{
+       
+        margin-bottom: 3%;
+        width:20%;
+        float:left;
+    }
+   #rightDiv{
+        margin-bottom: 3%;
+        margin-left:2%;
+        width:600px;
+        height:200px;
+        border: 1px solid gray;
+        float:left;
+ 
+    }
+   #bottomDiv{
+      margin-left:10%;
+   }
+</style>
+<div>
+    <div id="leftDiv" >
+        GUN Live Travel Time
+        <h2>NORTHBOUND</h2>
+        Moreton Drive to Pine River
+        <TABLE BORDER="1px" CELLPADDING="3" CELLSPACING="3" margin-bottom="2%">
+            <col width="70">
+            <col width="90">
+            <col width="90">
+            <tr>
+                <TD>Base   </TD>
+                <TD id="BaseTT">00</TD>
+                <TD id="BaseSpeed">00</TD>
+            </tr>
+            <TR>
+                <TD>Time</TD>
+                <TD id="CurrentTT">00</TD>
+                <TD id="CurrentSpeed">00</TD>
+            </TR>
+            <TR>
+                <TD>Delta</TD>
+                <TD id="TimeDelta"></TD>
+                <TD id="SpeedDelta"></TD>
+            </TR>
+
+        </TABLE>
+    </div>
+    <div id="rightDiv">
+        <canvas id="TotalLast90Big" style="background-color:lightgray" height="200" width="600"> </canvas>
+    </div>
+</div>
+<div id="bottomDiv">
+    <table BORDER="1px" CELLPADDING="3" CELLSPACING="3">
+        <tr>
+            <th>
+                &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Link
+            </th>
+            <th>
+                &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp       90 Min Graph
+            </th>
+            <th>
+                &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp Time &nbsp Speed
+            </th>
+
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.LinkName)
+                </td>
+                <td>
+                    <canvas id="Last90TT[@i]" style="background-color:lightgray" height="120" width="360"> </canvas>
+
+                </td>
+                <td>
+                    <TABLE BORDER="1px" CELLPADDING="3" CELLSPACING="3">
+                        <tr>
+                            <TD>Base   </TD>
+                            <TD id="BaseTT[@i]">@Html.DisplayFor(modelItem => item.baseTT)</TD>
+                            <TD id="BaseSpeed[@i]">@Html.DisplayFor(modelItem => item.baseSpeed)</TD>
+                        </tr>
+                        <TR>
+                            <TD>Time</TD>
+                            <TD id="CurrentTT[@i]">@Html.DisplayFor(modelItem => item.CurrentTT)</TD>
+                            <TD id="CurrentSpeed[@i]">@Html.DisplayFor(modelItem => item.CurrentSpeed)</TD>
+                        </TR>
+                        <TR>
+                            <TD>Delta</TD>
+                            <TD id="TimeDelta[@i]"></TD>
+                            <TD id="SpeedDelta[@i]"></TD>
+                        </TR>
+
+                    </TABLE>
+
+                </td>
+
+                @{i++;}
+
+
+
+            </tr>
+                    }
+
+    </table>
+</div>

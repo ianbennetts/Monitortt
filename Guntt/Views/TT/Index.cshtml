@@ -1,0 +1,72 @@
+﻿
+
+<script src="~/Scripts/GunTTAPI.js"></script>
+<script>
+    var ttBuffer = ["0", "1", "3", "4", "5", "6", "7"];
+    var project = '@ViewBag.Project';
+    var numberLinks = @ViewBag.Count;
+</script>
+
+
+@model IEnumerable<Guntt.Models.DataModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    int i = 0;
+}
+
+<table class="table" >
+    <tr>
+         <th>
+            Link
+        </th>
+        <th>
+            Base TT
+        </th>
+        <th>
+           Base Spd
+        </th>
+        <th>
+            Current TT
+        </th>
+        <th>
+           Speed
+        </th>
+        <th>
+            |       90 Min Graph
+        </th>
+
+            </tr>
+   
+@foreach (var item in Model)
+{
+    <tr>
+        
+        <td >
+            @Html.DisplayFor(modelItem => item.LinkName)
+        </td>
+        <td id="BaseTT[@i]">
+            @Html.DisplayFor(modelItem => item.baseTT)
+        </td>
+        <td id="BaseSpeed[@i]">
+            @Html.DisplayFor(modelItem => item.baseSpeed)
+        </td>
+        <td id="CurrentTT[@i]">
+            @Html.DisplayFor(modelItem => item.CurrentTT)
+        </td>
+        <td id="CurrentSpeed[@i]">
+            @Html.DisplayFor(modelItem => item.CurrentSpeed)
+        </td>
+ 
+       <td >   
+           <canvas id="Last90TT[@i]" style="background-color:lightgray" height="100" width="300"> </canvas> 
+           @{i++;}
+ 
+        </td>
+    </tr>
+}
+   
+</table>
