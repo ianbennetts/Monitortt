@@ -14,7 +14,8 @@ namespace Guntt.Controllers
         // GET: TT
         public ActionResult Index(string project)
         {
-            ViewBag.project = project;
+           ViewBag.project = project;
+
             var data = new DataBusiness().getSqlData(project);
             ViewBag.Count = data.Count();
             return View(data);

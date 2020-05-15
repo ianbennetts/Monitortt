@@ -11,22 +11,34 @@
 
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-image: url('https://static.wixstatic.com/media/d10897_77bb648cd8ec4d0c95b9b06e667f63ba~mv2_d_5120_3417_s_4_2.jpg');
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            ;
+        }
+
+        .full-height {
+            height: 100%;
+        }
+    </style>
 
 </head>
-<body>
-    <div class="container body-content">
-        
-
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Softgineering Pty Ltd</p>
-        </footer>
-    </div>
 
   
-</body>
+
+
+        @RenderBody()
+ 
+
+
+
 </html>

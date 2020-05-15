@@ -18,34 +18,37 @@
     int i = 0;
 }
 
-<table class="table" >
+<table align="center" class="table" style="width:1000px; align-content:center; background:rgba(255,255,255,0.9); overflow-x:auto; overflow-y:auto;">
     <tr>
-         <th>
+        <th>
             Link
         </th>
         <th>
             Base TT
         </th>
         <th>
-           Base Spd
+            Base Spd
+        </th>
+        <th>
+            Delay
         </th>
         <th>
             Current TT
         </th>
         <th>
-           Speed
+            Speed
         </th>
         <th>
             |       90 Min Graph
         </th>
 
-            </tr>
-   
-@foreach (var item in Model)
-{
+    </tr>
+
+    @foreach (var item in Model)
+    {
     <tr>
-        
-        <td >
+
+        <td>
             @Html.DisplayFor(modelItem => item.LinkName)
         </td>
         <td id="BaseTT[@i]">
@@ -54,19 +57,22 @@
         <td id="BaseSpeed[@i]">
             @Html.DisplayFor(modelItem => item.baseSpeed)
         </td>
+        <td id="Delay[@i]">
+            @Html.DisplayFor(modelItem => item.delay)
+        </td>
         <td id="CurrentTT[@i]">
             @Html.DisplayFor(modelItem => item.CurrentTT)
         </td>
         <td id="CurrentSpeed[@i]">
             @Html.DisplayFor(modelItem => item.CurrentSpeed)
         </td>
- 
-       <td >   
-           <canvas id="Last90TT[@i]" style="background-color:lightgray" height="100" width="300"> </canvas> 
-           @{i++;}
- 
+
+        <td>
+            <canvas id="Last90TT[@i]" style="background-color:lightgray" height="100" width="300"> </canvas>
+            @{i++;}
+
         </td>
     </tr>
-}
-   
+    }
+
 </table>

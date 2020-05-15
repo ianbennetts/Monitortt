@@ -257,7 +257,7 @@ namespace Guntt.Models
             {
                 SqlConnection con = null;
                 con = new SqlConnection(Startup.getConfigureString());
-                DateTime timeNow = DateTime.Now.AddHours(10);
+                DateTime timeNow = DateTime.Now;
                  //                int day = ((int)timeNow.DayOfWeek == 0) ? 7 : (int)timeNow.DayOfWeek;
                 //                day = day - 1;
                 hasBase = false;
@@ -279,15 +279,15 @@ namespace Guntt.Models
                 short[] shortBuffer = { 1234, 32678, 9012, 9876, 5432, 23 };
                 char[] charBuffer = Array.ConvertAll(shortBuffer, Convert.ToChar);
                 string buffer = new string(charBuffer);
-              //  int[] testBase;
+                int[] testBase;
                 // try
                 // {
                 var LinksList=getLinks(project);
                 foreach (var link in LinksList)
                 {
-                   // testBase=getBaseTT(link.ID);
-                    //         data.baseTT = data.baseTT;
-                    //         fspeed = (3600 / (float)link.baseTT) * ((float)link.LinkLength / 1000);
+                    testBase=getBaseTT(link.ID);
+                         //    data.baseTT = data.baseTT;
+                         //    fspeed = (3600 / (float)link.baseTT) * ((float)link.LinkLength / 1000);
                     fspeed = ((3600 / (float)link.CurrentTT)) * (((float)link.LinkLength / 1000));
                     link.baseSpeed = (int)fspeed;
                     fspeed = ((3600 / (float)link.CurrentTT)) * (((float)link.LinkLength / 1000));
@@ -312,7 +312,8 @@ namespace Guntt.Models
   
                 foreach (var lk in sqlData)
                 {
-                  //  testBase = getBaseTT(lk.ID);  hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+                    int baseTT = 0;
+                    testBase = getBaseTT(lk.ID);  
                     for (int j = 0; j < 180; j++)
                     {
                         TT[j] = 0;
@@ -342,27 +343,37 @@ namespace Guntt.Models
                         if (TTCount[j] != 0)
                         {
                             TTData[j] = (short)(TT[j] / TTCount[j]);
+                            baseTT = TTData[j];
                         }
                         else
                         {
                             TTData[j] = 1;
                         }
-                    //   TTBase[j] = //testBase[baseLineStart + (int)(j / 10)]; hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+                        if (testBase != null)
+                        {
+                            TTBase[j] = testBase[baseLineStart + (int)(j / 10)];// hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+                        }else
+                        {
+                            TTBase[j] = TTData[j];
+                        }
                        TTData[j] = TTData[j];
                         s = s + TTData[j].ToString() + " ";
                         bs =  bs + TTBase[j].ToString() + " ";
-                        // bs = bs + TTData[j].ToString() + " ";
+                        baseTT = TTBase[j];
+                       //  bs = bs + TTData[j].ToString() + " ";
                     }
 
                     // TTDataChar=Array.ConvertAll(TTData, Convert.ToChar);
                     sqlData.ElementAt(i).Last90MinTT = s;
-                    sqlData.ElementAt(i++).Last90MinBase = bs;
-                    //sqlData.ElementAt(i).Last90MinBase =i.ToString()+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-                    //sqlData.ElementAt(i).Last90MinTT = i.ToString() + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-
+                    sqlData.ElementAt(i).Last90MinBase =  bs;
+                    sqlData.ElementAt(i).baseTT = baseTT;
+                   fspeed = ((3600 / (float)baseTT)) * (((float)sqlData.ElementAt(i).LinkLength / 1000));
+                    sqlData.ElementAt(i++).baseSpeed = (int)fspeed;
+             //       sqlData.ElementAt(i) =i.ToString() ;
+             //       sqlData.ElementAt(i).Last90MinTT = i.ToString();
                 }
                 con.Close();
-                return sqlData;
+              return sqlData;
             }
         }
 
@@ -370,7 +381,7 @@ namespace Guntt.Models
         {
             project = s;
             if (project == "GUN") projectInt = 1;
-            if (project == "BH") projectInt = 1;
+            if (project == "BH" || project=="bh") projectInt = 1;
             if (project == "DAAJ1Qw") projectInt = 1;
             if (projectInt==1) return SqlData;
             return SqlDataBase;
@@ -482,9 +493,9 @@ namespace Guntt.Models
                    // TTDataChar=Array.ConvertAll(TTData, Convert.ToChar);
                     sqlData.ElementAt(i).Last90MinTT = s;
                     sqlData.ElementAt(i).Last90MinBase= bs;
+                    //sqlData.ElementAt(i).baseTT = 100;
                     //sqlData.ElementAt(i).Last90MinBase =i.ToString()+ "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
                     //sqlData.ElementAt(i).Last90MinTT = i.ToString() + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-                   
                 }
                 con.Close();
                 return sqlData;

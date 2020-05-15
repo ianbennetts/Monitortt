@@ -13,6 +13,11 @@ namespace Guntt.Models
 
         public int baseTT { get; set; }
         public int baseSpeed { get; set; }
+        public int delay { get
+            {
+                return CurrentTT-baseTT;
+            }
+        }
         public int CurrentTT { get; set; }
         public int CurrentSpeed { get; set; }
         public int LinkLength { get; set; }

@@ -7,7 +7,7 @@ $(document).ready(function () {
     var currentData = new Array(180);
     validateCode();
     setInterval(validateCode, 10000);
-   var graphArea;
+    var graphArea;
 });
 
 
@@ -22,7 +22,7 @@ function validateCode() {
         } else processData(request.response);
     };
 
-  request.send(datatosend);
+    request.send(datatosend);
 }
 
 function processData(response) {
@@ -36,26 +36,27 @@ function processData(response) {
     var graphArea = document.getElementById("Last90TT[" + (0) + "]");
     var speed = document.getElementById("CurrentSpeed[" + (0) + "]");
     var currentTT = document.getElementById("CurrentTT[" + (0) + "]");
+    var delay = document.getElementById("Delay[" + (0) + "]");
     var baseSpeed = document.getElementById("BaseSpeed[" + (0) + "]");
     var baseTT = document.getElementById("BaseTT[" + (0) + "]");
-    var highBase,lowBase,highTT,lowTT;
+    var highBase, lowBase, highTT, lowTT;
     var k = 0;
     var p = 0;
     var hold;
-    for (var j = 1; j < (7 * numberLinks) ; j = j + 7) {
-        
-        if (typeof listofData[(j + 7)] !== 'undefined') {
+    for (var j = 1; j < (8 * numberLinks); j = j + 8) {
 
-            bufferTT = (listofData[(j + 6)].split(' '));
-            bufferBase = (listofData[(j + 7)].split(' '));
+        if (typeof listofData[(j + 9)] !== 'undefined') {
+
+            bufferTT = (listofData[(j + 7)].split(' '));
+            bufferBase = (listofData[(j + 8)].split(' '));
             s = "";
             graphArea = document.getElementById("Last90TT[" + (k) + "]");
             t = "";
-            for (var i = 1; i < (bufferTT.length - 1) ; i++) {
+            for (var i = 1; i < (bufferTT.length - 1); i++) {
                 t = t + bufferTT[i] + " ";
                 currentData[i - 1] = parseInt(bufferTT[i]);
             }
-            for (var i = 1; i < (bufferBase.length - 1) ; i++) {
+            for (var i = 1; i < (bufferBase.length - 1); i++) {
                 //      s = s + bufferBase[i] + " ";
                 compareData[i - 1] = parseInt(bufferBase[i]);
             }
@@ -72,11 +73,15 @@ function processData(response) {
             // graphArea = document.getElementById("Last90TT[" + (k) + "]");
             // graphArea.innerHTML = listofData[(j + 5)];
             speed = document.getElementById("CurrentSpeed[" + (k) + "]");
-            speed.innerHTML = (listofData[(j + 5)] + "kph");
-            min = Math.floor(parseInt(listofData[(j + 4)]) / 60);
-            sec = parseInt(listofData[(j + 4)]) - (min * 60);
+            speed.innerHTML = (listofData[(j + 6)] + "kph");
+            min = Math.floor(parseInt(listofData[(j + 5)]) / 60);
+            sec = parseInt(listofData[(j + 5)]) - (min * 60);
             currentTT = document.getElementById("CurrentTT[" + (k) + "]");
             currentTT.innerHTML = (min + "m " + sec + "s");
+            min = Math.floor(parseInt(listofData[(j + 4)]) / 60);
+            sec = parseInt(listofData[(j + 4)]) - (min * 60);
+            delay = document.getElementById("Delay[" + (k) + "]");
+            delay.innerHTML = (min + "m " + sec + "s");
             baseSpeed = document.getElementById("BaseSpeed[" + (k) + "]");
             baseSpeed.innerHTML = (listofData[(j + 3)] + "kph");
             min = Math.floor(parseInt(listofData[(j + 2)]) / 60);
@@ -90,11 +95,11 @@ function processData(response) {
     }
 
 }
-function drawGraph(link,lowBound,highBound,currentData,compareData) {
-    var canvas = document.getElementById("Last90TT["+ (link) +"]");
+function drawGraph(link, lowBound, highBound, currentData, compareData) {
+    var canvas = document.getElementById("Last90TT[" + (link) + "]");
     var graph = canvas.getContext("2d");
     var scale, offset, window;
-    var high, low, topMargin, bottomMargin, yhight,endval;
+    var high, low, topMargin, bottomMargin, yhight, endval;
     window = 100 - 10 - 10;
     topMargin = Math.ceil((highBound - lowBound) * .1)
     scale = (highBound - lowBound) / window
@@ -113,7 +118,7 @@ function drawGraph(link,lowBound,highBound,currentData,compareData) {
             endVal = currentData[j];
         }
     }
-    graph.lineTo((j-1) * (300 / 180), (((highBound + topMargin) / scale) - (endVal / scale)));
+    graph.lineTo((j - 1) * (300 / 180), (((highBound + topMargin) / scale) - (endVal / scale)));
     graph.lineJoin = 'round';
     graph.stroke();
     //kkk
@@ -123,7 +128,10 @@ function drawGraph(link,lowBound,highBound,currentData,compareData) {
     graph.beginPath();
     graph.moveTo(0, 50);
     for (var j = 0; j < 180; j++) {
-        graph.lineTo(j * (300 / 180), (((highBound + topMargin) / scale) - (compareData[j] / scale)));
+        if (compareData[j] != 1) {
+            graph.lineTo(j * (300 / 180), (((highBound + topMargin) / scale) - (compareData[j] / scale)));
+            endVal = compareData[j];
+        }
     }
     graph.lineJoin = 'round';
     //KK
@@ -141,7 +149,7 @@ function drawGraph(link,lowBound,highBound,currentData,compareData) {
     graph.fillText("30          15", 205, 98);
 
 }
-function drawBackGround(graph,high,low,topMargin,scale) {
+function drawBackGround(graph, high, low, topMargin, scale) {
     graph.beginPath();
     graph.fillStyle = "rgba(200,200,200, 1)";
     //     context.clearRect(0, 0, 300, 100);
@@ -166,28 +174,28 @@ function drawBackGround(graph,high,low,topMargin,scale) {
     graph.lineTo(300, 30);
     graph.moveTo(0, 60);
     graph.lineTo(300, 60);
-    graph.moveTo(0,(((high+topMargin)/scale)- (high/scale)));
+    graph.moveTo(0, (((high + topMargin) / scale) - (high / scale)));
     graph.lineTo(300, (((high + topMargin) / scale) - (high / scale)))
     graph.moveTo(0, (((high + topMargin) / scale) - (low / scale)));
     graph.lineTo(300, (((high + topMargin) / scale) - (low / scale)))
     graph.stroke();
-/*
-
-    for (var i = 0; i < 270; i = i + 45) {
-        graph.beginPath();
-        graph.moveTo(i, 100);
-        graph.lineTo(i, 0);
-        graph.stroke();
-    }*/
+    /*
+    
+        for (var i = 0; i < 270; i = i + 45) {
+            graph.beginPath();
+            graph.moveTo(i, 100);
+            graph.lineTo(i, 0);
+            graph.stroke();
+        }*/
 }
 function getHigh(a) {
     var high = 0;
     var i;
-    for ( i = 0; i < 180; i++) {
-       if (high < a[i]) {
-           high = a[i];
+    for (i = 0; i < 180; i++) {
+        if (high < a[i]) {
+            high = a[i];
         }
-        
+
     }
     return high;
 }
@@ -195,7 +203,7 @@ function getHigh(a) {
 function getLow(a) {
     var low = 20000;
     for (var i = 0; i < 180; i++) {
-        if ( a[i]!=1 && low > a[i]) {
+        if (a[i] != 1 && low > a[i]) {
             low = a[i];
         }
     }

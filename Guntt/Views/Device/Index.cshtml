@@ -1,75 +1,78 @@
 ﻿<script src="~/Scripts/GunTT.js"></script>
 @model IEnumerable<Guntt.Models.DeviceModel>
 
-@{
-    ViewBag.Title = "Device Status";
-}
 
-<h2>Device Status</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            Site
-        </th>
-        <th>
-            SPH
-        </th>
-        <th>
-          Device
-        </th>
-        <th>
-            Changed
-        </th>
-        <th></th>
-    </tr>
-    @{ 
-        int i = 0;
-    }
-@foreach (var item in Model) {
-    <tr>
-        @{i++;}
-        <td >
-            @Html.DisplayFor(modelItem => item.Location) 
-        </td>
-        <td id="noSightings[@i]">
-            @Html.DisplayFor(modelItem => item.NoOfSightings)
-            
-        </td >
+<div class="full-height">
+    <h2 align="centre">Device Status</h2>
+    <table align="center" class="table" style="width:600px; align-content:center; background:rgba(255,255,255,0.9); overflow-x:auto; overflow-y:auto;">
+        <tr>
+            <th>
+                Site
+            </th>
+            <th>
+                SPH
+            </th>
+            <th>
+                Device
+            </th>
+            <th>
+                Changed
+            </th>
+            <th></th>
+        </tr>
+        @{
+            int i = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                @{i++;}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td id="noSightings[@i]">
+                    @Html.DisplayFor(modelItem => item.NoOfSightings)
 
-        <td  >
-           
-           @if (item.BtDevice == 0)
-           {
-            <img id="btDevice[@i]"   src="~/Content/Images/Red Icon.png" width="25" height="25">
-           }
-           else
-           {
-            <img id="btDevice[@i]" src="~/Content/Images/Green Icon.png" width="25" height="25">
-           }
-        </td>
-        <td id="When[@i]">
-           @Html.DisplayFor(modelItem => item.When) 
-        </td>
-    </tr>
-}
+                </td>
 
-</table>
-<div id="getT" ></div>
+                <td>
+
+                    @if (item.BtDevice == 0)
+                    {
+                        <img id="btDevice[@i]" src="~/Content/Images/Red Icon.png" width="25" height="25">
+                    }
+                    else
+                    {
+                        <img id="btDevice[@i]" src="~/Content/Images/Green Icon.png" width="25" height="25">
+                    }
+                </td>
+                <td id="When[@i]">
+                    @Html.DisplayFor(modelItem => item.When)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+
+
+
 <script>
     var project = '@ViewBag.Project';
     function setIconDevice(index, set) {
         btdevice = document.getElementById("btDevice[" + index + "]");
- 
+
         if (set == 0) {
             btdevice.src = "/Content/Images/Red Icon.png";
- 
+
             deviceStatus[index-1] = 0;
         } else {
             btdevice.src = "/Content/Images/Green Icon.png";
             deviceStatus[index-1] = 1;
         }
     }
-   // document.writeln( testBuffer.charCodeAt(2));
+
 
 </script>

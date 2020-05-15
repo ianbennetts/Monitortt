@@ -15,20 +15,20 @@ namespace Guntt.Controllers
         [HttpGet]
         public string Get(string project)
         {
-
+            //https://static.wixstatic.com/media/d10897_77bb648cd8ec4d0c95b9b06e667f63ba~mv2_d_5120_3417_s_4_2.jpg
             string s = "";
             DataBusiness dataBusiness = new DataBusiness();
             IEnumerable<DataModel> sqlData = dataBusiness.getSqlData(project);
             DataModel data = new DataModel();
             int length = sqlData.Count();
-            s =  length.ToString() + ",";
+            s = length.ToString() + ",";
             for (int i = 0; i < length; i++)
-            
+
             {
                 data = sqlData.ElementAt(i);
                 //s = s + data.LinkName + "," + data.baseTT.ToString() + "," + data.baseSpeed.ToString() + "," + data.CurrentTT.ToString() + ","
                 //    + data.CurrentSpeed.ToString() + "," + data.Last90MinTT + "," + data.Last90MinBase + ",";
-                s = s + data.LinkName + "," + data.baseTT.ToString() + "," + data.baseSpeed.ToString() + "," + data.CurrentTT.ToString() + ","
+                s = s + data.LinkName + "," + data.baseTT.ToString() + "," + data.baseSpeed.ToString() + "," + data.delay.ToString() + ","+ data.CurrentTT.ToString() + ","
                     + data.CurrentSpeed.ToString() + ",";
             }
 
@@ -47,7 +47,7 @@ namespace Guntt.Controllers
             for (int i = 0; i < length; i++)
             {
                 data = sqlData.ElementAt(i);
-                s = s + data.LinkName + "," + data.baseTT.ToString() + "," + data.baseSpeed.ToString() + "," + data.CurrentTT.ToString() + ","
+                s = s + data.LinkName + "," + data.baseTT.ToString() + "," + data.baseSpeed.ToString() + "," + data.delay.ToString() + ","  + data.CurrentTT.ToString() + ","
                     + data.CurrentSpeed.ToString() + "," + data.Last90MinTT + "," + data.Last90MinBase + ",";
             }
 
@@ -81,7 +81,6 @@ namespace Guntt.Controllers
 
             return null;
         }
-  
+
     }
 }
-
