@@ -114,12 +114,20 @@ namespace Guntt.Models
       //      string[] dayofweek = { "", "Sun" , "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"};
             int[,] ws7days = new int[2, 675];
             string path = HttpContext.Current.Server.MapPath("~/Content/");
-            XLWorkbook excelTemplate = new XLWorkbook(path + "WeeklyDL Template.xlsx");
+            XLWorkbook excelTemplate;
+            if (project.ToUpper() == "VAS")
+            {
+                excelTemplate = new XLWorkbook(path + "Weekly Template VAS.xlsx");
+            }
+            else
+            {
+                excelTemplate = new XLWorkbook(path + "WeeklyDL Template.xlsx");
+            }
             worksheet = excelTemplate.Worksheet("Data");
             DataBusiness db = new DataBusiness();
       //     day1 = ((int)startDate.DayOfWeek == 0) ? 7 : (int)startDate.DayOfWeek;
             t = utilities.UnixTime(startDate) + (14 * 60 * 60) - 10;
-            var links = db.getLinks(project);
+            var links =  db.getLinks(project);
             if (links.Count() == 0) return null;
             var j1 = 0;
             foreach (var l in links)
@@ -148,7 +156,7 @@ namespace Guntt.Models
                 }
                 excel.AddWorksheet(worksheet);
             }
- 
+
             return excel;
         }
 
